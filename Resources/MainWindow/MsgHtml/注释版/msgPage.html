@@ -1,0 +1,54 @@
+﻿<!-- <html> 标签定义了HTML文档的根元素
+     <meta charset="utf-8"> 指定文档的字符编码为UTF-8，确保文本在各种语言环境下正确显示
+	 <head> 标签包含了文档的元数据和引用的外部资源
+	 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 再次指定文档的内容类型和字符编码（与上面的meta标签重复，但没有副作用）
+	 <link rel="stylesheet" type="text/css" href="qrc:/Resources/MainWindow/MsgHtml/ui.css"> 引用外部CSS文件ui.css，用于定义网页的样式
+	 <script src="qrc:/Resources/MainWindow/MsgHtml/qwebchannel.js"></script> 引用Qt的WebChannel库，用于在网页与Qt应用之间建立通信通道
+	 <script src="qrc:/Resources/MainWindow/MsgHtml/msghandling.js"></script> 引用自定义的JavaScript文件msghandling.js，该文件包含消息处理和显示的逻辑
+	 <body> 标签包含网页的主体内容：
+		<div id="placeholder"></div> 一个空的<div>元素，带有ID placeholder。这是消息展示区域，接收到的消息内容将被插入到这里
+		
+工作流程
+	1.加载资源：
+
+	页面加载时，浏览器会依次加载CSS文件和JavaScript文件。
+	ui.css用于设置页面的样式。
+	jquery-3.3.1.min.js加载jQuery库，为后续的DOM操作提供支持。
+	qwebchannel.js加载Qt的WebChannel库，允许页面与Qt应用进行通信。
+	msgtmpl.js加载自定义JavaScript逻辑，处理接收到的消息并将其显示在页面上。
+	
+	2.初始化WebChannel：
+
+	msghandling.js文件中，使用QWebChannel初始化WebChannel并获取Qt对象的引用。
+	通过这些引用，网页可以接收来自Qt应用的消息。
+
+	3.显示消息：
+
+	当接收到消息时，JavaScript函数（如recvHtml_10001等）会处理消息内容。
+	使用模板字符串和format函数将消息格式化为HTML。
+	将格式化后的HTML插入到<div id="placeholder">中，显示在网页上。
+	
+示例：
+	假设客户端接收到一条消息——你好，msghandling.js中相应的处理函数会接收到消息，并将其格式化为：
+<div class="msg-wrap left">
+    <img class="header" src="qrc:/MainWindow/girl.png" ondragstart="return false;" onselectstart="return false;">
+    <div class="msg">你好<span class="trigon"></span></div>
+</div>
+-->
+
+
+<html>
+	<meta charset="utf-8">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="qrc:/Resources/MainWindow/MsgHtml/ui.css"> 
+		<script src="qrc:/Resources/MainWindow/MsgHtml/jquery-3.3.1.min.js"></script>
+		<script src="qrc:/Resources/MainWindow/MsgHtml/qwebchannel.js"></script>
+		<script src="qrc:/Resources/MainWindow/MsgHtml/msghandling.js"></script>
+    </head>
+    <body>
+		<div id="placeholder">
+			<!-- 消息将添加到这里 -->
+		</div>
+    </body>
+</html>

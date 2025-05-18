@@ -1,0 +1,21 @@
+<!-- msg-wrap 是一个用于包裹整个消息元素的类，可以用于添加CSS样式 
+     right 是一个位置类，通常用于将消息对齐到右侧
+	 class="header" 为图片添加了一个类，用于CSS样式
+	 ondragstart="return false;" 禁止图片拖动，防止用户误操作
+	 onselectstart="return false;" 禁止图片文本选择，防止用户选择图片
+	 onselect="document.selection.empty();"  清空选择内容，以确保用户无法选中图片
+	 class="msg" 用于包裹消息文本，并应用相关的CSS样式
+	 {{MSG}} 是一个占位符，表示消息的内容。这个占位符将在JavaScript中被实际的消息文本替换。
+	 <span class="trigon"></span> 是一个装饰性元素，通常用于显示消息气泡的三角形部分，指向发送者的头像，进一步增强了视觉效果
+	 
+经过JavaScript处理后，这个HTML模板可能会变成如下内容：
+<div class="msg-wrap right">
+	<img class="header" src="qrc:/MainWindow/girl.png" ondragstart="return false;" onselectstart="return false;" onselect="document.selection.empty();">
+	<div class="msg">你好<span class="trigon"></span></div>
+</div>
+-->
+
+<div class="msg-wrap right">
+	<img class="header" src="%1" ondragstart="return false;" onselectstart="return false;" onselect="document.selection.empty();">
+	<div class="msg">{{MSG}}<span class="trigon"></span></div>
+</div>
