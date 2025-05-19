@@ -35,7 +35,7 @@ QString UseMySQL::getDepartmentID(QString name)
 bool UseMySQL::getDepartmentInfo(QString id, QStringList& fileds, QVector<QVector<QString>>& info)
 {
 	QSqlQueryModel model;
-	QString companyID = getDepartmentID(QString::fromUtf8("ÂÖ¨Âè∏Áæ§"));
+	QString companyID = getDepartmentID(QString::fromLocal8Bit("π´Àæ»∫"));
 	if (id == companyID)
 	{
 		model.setQuery(QString::fromLocal8Bit("SELECT * FROM tab_employees"),base);
@@ -50,7 +50,7 @@ bool UseMySQL::getDepartmentInfo(QString id, QStringList& fileds, QVector<QVecto
 	
 	for (int j = 0; j < columnCount;j++)
 	{
-		fileds.push_back(model.record(0).fieldName(j));//Ëé∑ÂèñÂ≠óÊÆµÂêçÁß∞
+		fileds.push_back(model.record(0).fieldName(j));//ªÒ»°◊÷∂Œ√˚≥∆
 	}
 
 	for (int i = 0; i < rowCount;i++)
@@ -58,11 +58,68 @@ bool UseMySQL::getDepartmentInfo(QString id, QStringList& fileds, QVector<QVecto
 		QVector<QString> rowTemp;
 		for (int j = 0; j < columnCount; j++)
 		{
-			//ÊØèÊ¨°Ëé∑ÂèñÁ¨¨iË°åÁöÑÁ¨¨jÂàóÊï∞ÊçÆ
+			//√ø¥ŒªÒ»°µ⁄i––µƒµ⁄j¡– ˝æ›
 			rowTemp.push_back(model.record(i).value(j).toString());
 		}
 		info.push_back(rowTemp);
 	}
+	return true;
+}
+
+bool UseMySQL::getEmployeeInfo(QString id, QStringList& fileds, QVector<QString>& info)
+{
+	QSqlQueryModel model;
+	model.setQuery(QString::fromLocal8Bit("SELECT * FROM tab_employees WHERE employeeID = %1").arg(id), base);
+
+	int rowCount = model.rowCount();
+	int columnCount = model.columnCount();
+	if (rowCount <= 0 || columnCount <= 0) return false;
+
+	QSqlRecord record = model.record(0);//ªÒ»°µ⁄“ª–– ˝æ›
+	for (int j = 0;j < columnCount; j++)
+	{
+		fileds.push_back(record.fieldName(j));//ªÒ»°◊÷∂Œ√˚≥∆
+		info.push_back(record.value(j).toString());//ªÒ»°◊÷∂Œ÷µ
+	}
+	return true;
+}
+
+QString UseMySQL::getDepartmentName(QString id)
+{
+	QSqlQuery sql(QString("SELECT departmentName FROM tab_department WHERE departmentID = '%1'").arg(id), base);
+	if (sql.next())
+	{
+		QString res = sql.value(0).toString();
+		return res;
+	}
+	return QString();
+}
+
+QString UseMySQL::addEmployee(QString departmentID, QString employeeName, QString picture)
+{
+	QSqlQuery sql(base);
+	if(!sql.exec(QString("SELECT MAX(employeeID) FROM tab_accounts"))) return QString();
+	sql.first();//÷∏œÚµ⁄“ªÃıø…”√º«¬º
+	int employeeID = sql.value(0).toInt() + 1;
+
+	if (!sql.exec(QString("INSERT INTO tab_accounts VALUES(%1,'%2')").arg(employeeID).arg(employeeName)))	return QString();
+
+	if (!sql.exec(QString("INSERT INTO tab_employees(departmentID,employeeID,employeeName,picture,status) \
+						  VALUES(%1,%2,'%3','%4',1)").arg(departmentID).arg(employeeID).arg(employeeName).arg(picture)))
+	{
+		sql.exec(QString("DELETE FROM tab_accounts WHERE employeeID = %1").arg(employeeID));
+		return QString();
+	}
+	return QString::number(employeeID);
+}
+
+bool UseMySQL::deleteEmployee(QString employeeID)
+{
+	QSqlQuery sql(base);
+	sql.exec(QString("SELECT * FROM tab_employees WHERE employeeID = %1").arg(employeeID));
+	if (!sql.next()) return false;
+
+	sql.exec(QString("UPDATE tab_employees SET status = 0 WHERE employeeID =  %1").arg(employeeID));
 	return true;
 }
 
@@ -81,12 +138,12 @@ bool UseMySQL::connectMySQL()
 
 	if (base.open())
 	{
-		QMessageBox::information(nullptr, "MYSQL", "ËøûÊé•ÊàêÂäü",QMessageBox::Yes);
+		QMessageBox::information(nullptr, "MYSQL", QString::fromLocal8Bit("¡¨Ω”≥…π¶"),QMessageBox::Yes);
 		return true;
 	}
 	else
 	{
-		QMessageBox::critical(nullptr, "MYSQL", "ËøûÊé•Â§±Ë¥•: " + base.lastError().text());
+		QMessageBox::critical(nullptr, "MYSQL", "¡¨Ω” ß∞‹: " + base.lastError().text());
 		return false;
 	}
 }

@@ -19,8 +19,19 @@ private:
     void initUdpSocket();
     void updateTableData(QString departmentID = QString(), QString employeeID = QString());
 
+    QStringList getHeaderLabelsText();
+
 private slots:
     void onUdpBroadcast(QByteArray& arr);
+
+	void on_selectPictureBtn_clicked();
+
+	void on_addEmployeeBtn_clicked();
+
+	void on_queryDepBtn_clicked();
+	void on_queryEmployeeBtn_clicked();
+
+	void on_deleteEmployeeBtn_clicked();
 
 private:
     Ui::QtQQServerClass ui;
@@ -32,5 +43,6 @@ private:
     const int udpPort = 59999;//udp端口
 
     QStandardItemModel* model;
+	QString picturePath;//头像路径
 
 };

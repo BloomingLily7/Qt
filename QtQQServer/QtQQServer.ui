@@ -51,7 +51,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>805</width>
+        <width>831</width>
         <height>508</height>
        </rect>
       </property>
@@ -171,9 +171,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1" colspan="2">
-          <widget class="QLineEdit" name="employeeNameEdit"/>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_4">
            <property name="text">
@@ -206,13 +203,6 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="3">
-          <widget class="QPushButton" name="selectPictureBtn">
-           <property name="text">
-            <string>选择照片</string>
            </property>
           </widget>
          </item>
@@ -286,6 +276,16 @@
           <widget class="QPushButton" name="deleteEmployeeBtn">
            <property name="text">
             <string>注销员工</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="3">
+          <widget class="QLineEdit" name="employeeNameEdit"/>
+         </item>
+         <item row="2" column="2">
+          <widget class="QPushButton" name="selectPictureBtn">
+           <property name="text">
+            <string>选择照片</string>
            </property>
           </widget>
          </item>
